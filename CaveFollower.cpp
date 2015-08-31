@@ -204,7 +204,8 @@ void cfr::Robot::followWall(void)
    * Debugging Purpose, uncomment if needed
    * 
    */
-
+  //bluetooth->println("Add value: " + String(add_value));
+  //Serial.println("Add value: " + String(add_value));
   
   if (add_value == 0.0) run(global_speed, global_speed, Forward, Forward);
   else if (add_value < 0.0) run(global_speed, global_speed + add_value, Forward, Forward);
