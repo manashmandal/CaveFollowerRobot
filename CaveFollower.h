@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <math.h>
 #include "NewPing.h"
+#include "SoftwareSerial.h"
 
 typedef uint16_t uint;
 
@@ -15,11 +16,14 @@ namespace cfr {
 			byte left_motor[2];
 			byte right_motor[2];
 
+      //Rx Tx pin
+      byte rxTx[2];
+
 			//Sonar variables
 			NewPing *front_sonar;
 			NewPing *left_sonar;
 			NewPing *right_sonar;
-
+      SoftwareSerial *bluetooth;
 
 			//Sonar pins
 			// TRIG, ECHO, MAX_DISTANCE
@@ -48,6 +52,7 @@ namespace cfr {
 
 			*/
 			Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar,byte *r_sonar);
+      Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sonar, byte *rxtx);
 
 			/*
 				DESCRIPTION:
@@ -141,6 +146,7 @@ namespace cfr {
 			*/
 
 				void printDistances(byte short_delay = 100, uint long_delay = 1000);
+        void printViaBluetooth(byte short_delay = 100, uint long_delay = 1500);
 
 	};
 }

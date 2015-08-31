@@ -9,12 +9,14 @@ using namespace cfr;
 byte lm[2] = {3, 4};
 byte rm[2] = {5, 6};
 
+byte tx_rx[2] = {51, 50};
+
 //TRIG > ECHO > MAX_DISTANCE
 byte f_sonar[3] = {11, 10 , MAX_DISTANCE};
 byte l_sonar[3] = {9, 8, MAX_DISTANCE};
 byte r_sonar[3] = {13, 12, MAX_DISTANCE};
 
-Robot r(lm, rm, l_sonar , f_sonar, r_sonar);
+Robot r(lm, rm, l_sonar , f_sonar, r_sonar, tx_rx);
 
 void setup()
 {
@@ -26,6 +28,7 @@ void setup()
 }
 
 void loop() {
-
-    
+  
+   // r.printViaBluetooth(200, 1500);
+      r.printDistances(200, 1500);
 }
