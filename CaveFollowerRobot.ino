@@ -3,6 +3,7 @@
 #include "CaveFollower.h"
 
 #define MAX_DISTANCE 200
+#define FRONT_MAX_DISTANCE 500
 
 using namespace cfr;
 
@@ -12,7 +13,7 @@ byte rm[2] = {5, 6};
 byte tx_rx[2] = {51, 50};
 
 //TRIG > ECHO > MAX_DISTANCE
-byte f_sonar[3] = {11, 10 , MAX_DISTANCE};
+byte f_sonar[3] = {11, 10 , FRONT_MAX_DISTANCE};
 byte l_sonar[3] = {9, 8, MAX_DISTANCE};
 byte r_sonar[3] = {13, 12, MAX_DISTANCE};
 
@@ -29,6 +30,6 @@ void setup()
 
 void loop() {
   
-   // r.printViaBluetooth(200, 1500);
-      r.printDistances(200, 1500);
+    r.printViaBluetooth(200, 1500);
+     // r.printDistances(200, 1500);
 }

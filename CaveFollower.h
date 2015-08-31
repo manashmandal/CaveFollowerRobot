@@ -148,6 +148,33 @@ namespace cfr {
 				void printDistances(byte short_delay = 100, uint long_delay = 1000);
         void printViaBluetooth(byte short_delay = 100, uint long_delay = 1500);
 
+
+        /*
+         * 
+         * DESCRIPTION:
+         * ===========
+         * Follows wall using PD Algorithm
+         */
+
+         void followWall(void);
+
+         /*
+          * DESCRIPTION:
+          * ============
+          * Calculates error by taking reading between left and right sonar
+          * 
+          * Gives -ve value if left sonar distance is bigger than right one and vice versa
+          * 
+          */
+
+          int calculateError(void);
+
+          /*
+           * DESCRIPTION:
+           * ===========
+           * Optimum Setpoint value
+           */
+           static int set_point;
 	};
 }
 

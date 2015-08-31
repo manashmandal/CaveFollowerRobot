@@ -2,6 +2,8 @@
 
 uint cfr::Robot::global_speed = 150;
 
+int cfr::Robot::set_point = 1;
+
 cfr::Robot::Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sonar)
 {
 	//Assigning Motor Pins
@@ -77,6 +79,8 @@ void cfr::Robot::initialize(void)
 	front_distance = 0;
 	left_distance = 0;
 	right_distance = 0;
+  error = 0;
+  previous_error = 0;
 }
 
 void cfr::Robot::run(uint left_speed, uint right_speed, Robot::dir left_dir, Robot::dir right_dir){
@@ -187,3 +191,32 @@ void cfr::Robot::printDistances(byte short_delay, uint long_delay)
 	Serial.println("\n ******** DISTANCE END ******* ");
 	delay(long_delay);
 }
+
+void cfr::Robot::followWall(void)
+{
+  int perfect_value = 1;
+  previous_error = error;
+  error = calculateError();
+
+  double add_value = kp * error + kd * (previous_error - error);
+
+  /*
+   * Debugging Purpose, uncomment if needed
+   * 
+   */
+
+  
+  if (add_value == 0.0) run(global_speed, global_speed, Forward, Forward);
+  else if (add_value < 0.0) run(global_speed, global_speed + add_value, Forward, Forward);
+  else if (add_value > 0.0) run(global_speed - add_value, global_speed, Forward, Forward);
+
+  while (frontDistance() < 6) run(Nowhere);
+}
+
+int cfr::Robot::calculateError(void)
+{
+  int ld = leftDistance();
+  int rd = rightDistance();
+  return rd - ld;
+}
+
