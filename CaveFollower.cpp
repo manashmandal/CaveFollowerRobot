@@ -71,7 +71,7 @@ cfr::Robot::Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sona
   bluetooth->begin(9600);
   bluetooth->println("*****Initialized Bluetooth******");
 
-  back_sonar = new NewPing(bs[0], bs[i], bs[2]);
+  back_sonar = new NewPing(bs[0], bs[1], bs[2]);
   
   initialize();
 }
@@ -86,6 +86,8 @@ void cfr::Robot::printViaBluetooth(byte short_delay, uint long_delay)
   bluetooth->println("Left distance: " + String(left_distance));
   delay(short_delay);
   bluetooth->println("Right distance: " + String(right_distance));
+  delay(short_delay);
+  bluetooth->println("Back Distance: " + String(back_distance));
   delay(short_delay);
   bluetooth->println("\n ******** DISTANCE END ******* ");
   delay(long_delay);
@@ -212,6 +214,7 @@ void cfr::Robot::updateMedianDistances(void)
   front_distance = frontMedianDistance();
   left_distance = leftMedianDistance();
   right_distance = rightMedianDistance();
+  back_distance = backMedianDistance();
 }
 
 void cfr::Robot::printDistances(byte short_delay, uint long_delay)
@@ -225,6 +228,8 @@ void cfr::Robot::printDistances(byte short_delay, uint long_delay)
 	delay(short_delay);
 	Serial.println("Right distance: " + String(right_distance));
 	delay(short_delay);
+  Serial.println("Back Distance: " + String(back_distance));
+  delay(short_delay);
 	Serial.println("\n ******** DISTANCE END ******* ");
 	delay(long_delay);
 }

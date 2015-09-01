@@ -55,7 +55,7 @@ namespace cfr {
 			*/
 			Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar,byte *r_sonar);
       Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sonar, byte *rxtx);
-      Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sonar, byte *back_sonar, byte *rxtx);
+      Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sonar, byte *b_sonar, byte *rxtx);
 
 			/*
 				DESCRIPTION:
