@@ -196,9 +196,9 @@ void cfr::Robot::printDistances(byte short_delay, uint long_delay)
 
 void cfr::Robot::followWall(void)
 {
-  int perfect_value = 1;
+  
   previous_error = error;
-  error = perfect_value - calculateError();
+  error = calculateError();
 
   double add_value = kp * error + kd * (previous_error - error);
 
@@ -206,20 +206,50 @@ void cfr::Robot::followWall(void)
    * Debugging Purpose, uncomment if needed
    * 
    */
-  bluetooth->println("Add value: " + String(add_value));
+  //bluetooth->println("Add value: " + String(add_value));
   //Serial.println("Add value: " + String(add_value));
   
   if (add_value == 0.0) run(global_speed, global_speed, Forward, Forward);
-  else if (add_value < 0.0) run(global_speed, global_speed + add_value, Forward, Forward);
-  else if (add_value > 0.0) run(global_speed - add_value, global_speed, Forward, Forward);
+  else if (add_value < 0.0) run(global_speed, global_speed - add_value, Forward, Forward);
+  else if (add_value > 0.0) run(global_speed + add_value, global_speed, Forward, Forward);
 
-  while (frontDistance() < 6) run(Nowhere);
+  //while (frontMedianDistance() < 7) run(Nowhere);
 }
 
 int cfr::Robot::calculateError(void)
 {
-  int ld = leftDistance();
-  int rd = rightDistance();
+  int ld = leftMedianDistance();
+  int rd = rightMedianDistance();
+  //Serial.println("Ld: " + String(ld));
+  //Serial.println("Rd: " + String(rd));
+//  bluetooth->println("difference: " + String(rd - ld));
   return rd - ld;
 }
 
+
+int cfr::Robot::frontMedianDistance(void)
+{
+  int uS = front_sonar->ping_median();
+//  Serial.println("Front Distance: " + String(uS / US_ROUNDTRIP_CM));
+//  bluetooth->println("Front Distance: " + String(uS / US_ROUNDTRIP_CM));
+  return uS / US_ROUNDTRIP_CM;
+}
+
+
+int cfr::Robot::leftMedianDistance(void)
+{
+  int uS = left_sonar->ping_median();
+  //Serial.println("Left Distance: " + String(uS / US_ROUNDTRIP_CM));
+//  bluetooth->println("Left Distance: " + String(uS / US_ROUNDTRIP_CM));
+  return uS / US_ROUNDTRIP_CM;
+}
+
+
+
+int cfr::Robot::rightMedianDistance(void)
+{
+  int uS = right_sonar->ping_median();
+//  Serial.println("Right Distance: " + String(uS / US_ROUNDTRIP_CM));
+//  bluetooth->println("Right Distance: " + String(uS / US_ROUNDTRIP_CM));
+  return uS / US_ROUNDTRIP_CM;
+}

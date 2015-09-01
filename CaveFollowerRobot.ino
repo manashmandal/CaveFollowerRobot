@@ -2,8 +2,8 @@
 
 #include "CaveFollower.h"
 
-#define MAX_DISTANCE 200
-#define FRONT_MAX_DISTANCE 500
+#define MAX_DISTANCE 300
+#define FRONT_MAX_DISTANCE 300
 
 using namespace cfr;
 
@@ -24,22 +24,27 @@ void setup()
 	Serial.begin(9600);
 	Serial.println("Begin!\n");
   Robot::global_speed = 150;
-  r.setKp(1);
+  r.setKp(3);
   r.setKd(0);
-  r.run(Robot::global_speed, 0, Robot::Forward, Robot::Forward);
+ // r.run(Robot::global_speed, 0, Robot::Forward, Robot::Forward);
 }
 
 void loop() {
-   if (r.bluetooth->available() > 0){
-      double x = r.bluetooth->parseFloat();
-      double y = r.bluetooth->parseFloat();
-      r.setKp(x);
-      r.setKd(y);
-      r.bluetooth->println("Kp : " + String(x));
-      r.bluetooth->println("Kd : " + String(y));
-   }
+//   if (r.bluetooth->available() > 0){
+//      double x = r.bluetooth->parseFloat();
+//      double y = r.bluetooth->parseFloat();
+//      r.setKp(x);
+//      r.setKd(y);
+//      r.bluetooth->println("Kp : " + String(x));
+//      r.bluetooth->println("Kd : " + String(y));
+//   }
     //r.printViaBluetooth(200, 1500);
-     // r.printDistances(200, 1500);
+    //r.printDistances(200, 1500);
     r.followWall();
-    delay(100);
+    //delay(1000);
+
+//  r.frontMedianDistance();
+//  r.leftMedianDistance();
+//  r.rightMedianDistance();
+//  delay(1000);
 }

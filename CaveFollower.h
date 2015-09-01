@@ -124,7 +124,9 @@ namespace cfr {
 			uint leftDistance(void);
 			uint rightDistance(void);
 
-
+      int frontMedianDistance(void);
+      int leftMedianDistance(void);
+      int rightMedianDistance(void);
 			/*
 			DESCRIPTION:
 			============
