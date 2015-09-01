@@ -48,6 +48,35 @@ cfr::Robot::Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sona
   initialize();
 }
 
+cfr::Robot::Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sonar, byte *b_sonar, byte *rxtx)
+{
+  //Assigning Motor Pins
+  for (int i = 0; i < 2; i++){
+    left_motor[i] = lm[i];
+    right_motor[i] = rm[i];
+    rxTx[i] = rxtx[i];
+  }
+
+  //Assigning sonar pins
+  for (int i = 0; i < 3; i++){
+    fs[i] = f_sonar[i];
+    rs[i] = r_sonar[i];
+    ls[i] = l_sonar[i];
+    bs[i] = b_sonar[i];
+  }
+
+
+  //Initializing Bluetooth RX TX
+  bluetooth = new SoftwareSerial(rxTx[0], rxTx[1]);
+  bluetooth->begin(9600);
+  bluetooth->println("*****Initialized Bluetooth******");
+
+  back_sonar = new NewPing(bs[0], bs[i], bs[2]);
+  
+  initialize();
+}
+
+
 void cfr::Robot::printViaBluetooth(byte short_delay, uint long_delay)
 {
   updateDistances();
@@ -81,8 +110,6 @@ void cfr::Robot::initialize(void)
 	right_distance = 0;
   error = 0;
   previous_error = 0;
-  setKp(0);
-  setKd(0);
 }
 
 void cfr::Robot::run(uint left_speed, uint right_speed, Robot::dir left_dir, Robot::dir right_dir){
@@ -274,3 +301,12 @@ int cfr::Robot::rightMedianDistance(void)
 //  bluetooth->println("Right Distance: " + String(uS / US_ROUNDTRIP_CM));
   return uS / US_ROUNDTRIP_CM;
 }
+
+int cfr::Robot::backMedianDistance(void)
+{
+  int uS = back_sonar->ping_median();
+//  Serial.println("Back Distance: " + String(uS / US_ROUNDTRIP_CM));
+//  bluetooth->println("Back Distance: " + String(uS / US_ROUNDTRIP_CM));
+  return uS / US_ROUNDTRIP_CM;
+}
+

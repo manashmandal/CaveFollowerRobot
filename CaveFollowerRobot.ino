@@ -4,6 +4,7 @@
 
 #define MAX_DISTANCE 200
 #define FRONT_MAX_DISTANCE 1000
+#define BACK_MAX_DISTANCE 1000
 
 using namespace cfr;
 
@@ -16,6 +17,7 @@ byte tx_rx[2] = {51, 50};
 byte f_sonar[3] = {11, 10 , FRONT_MAX_DISTANCE};
 byte l_sonar[3] = {9, 8, MAX_DISTANCE};
 byte r_sonar[3] = {13, 12, MAX_DISTANCE};
+byte b_sonar[3] = {31, 30, BACK_MAX_DISTANCE};
 
 Robot r(lm, rm, l_sonar , f_sonar, r_sonar, tx_rx);
 
@@ -42,12 +44,12 @@ void loop() {
 //   }
     //r.printViaBluetooth(200, 1500);
 //    r.printDistances(200, 1500);
-    //r.followWall();
+    r.followWall();
 //      r.bluetooth->println("Error: " + String(r.calculateError()));
       
 //    delay(1000);
-    r.bluetooth->println("Front Distance: " + String(r.frontMedianDistance()));
-    delay(100);
+//    r.bluetooth->println("Front Distance: " + String(r.frontMedianDistance()));
+//    delay(100);
 //  r.frontMedianDistance();
 //  r.leftMedianDistance();
 //  r.rightMedianDistance();

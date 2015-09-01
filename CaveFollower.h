@@ -23,18 +23,20 @@ namespace cfr {
 			NewPing *front_sonar;
 			NewPing *left_sonar;
 			NewPing *right_sonar;
-      
+      NewPing *back_sonar;
 
 			//Sonar pins
 			// TRIG, ECHO, MAX_DISTANCE
 			byte fs[3];
 			byte ls[3];
 			byte rs[3];
-
+      byte bs[3];
+      
 			//Unsigned distance variables
 			uint front_distance;
 			uint right_distance;
 			uint left_distance;
+      uint back_distance;
 
 			//Kp and Kd constant
 			double kp, kd;
@@ -53,6 +55,7 @@ namespace cfr {
 			*/
 			Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar,byte *r_sonar);
       Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sonar, byte *rxtx);
+      Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sonar, byte *back_sonar, byte *rxtx);
 
 			/*
 				DESCRIPTION:
@@ -134,6 +137,7 @@ namespace cfr {
       int frontMedianDistance(void);
       int leftMedianDistance(void);
       int rightMedianDistance(void);
+      int backMedianDistance(void);
 			/*
 			DESCRIPTION:
 			============
