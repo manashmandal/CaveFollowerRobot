@@ -196,7 +196,7 @@ void cfr::Robot::followWall(void)
 {
   int perfect_value = 1;
   previous_error = error;
-  error = calculateError();
+  error = perfect_value - calculateError();
 
   double add_value = kp * error + kd * (previous_error - error);
 

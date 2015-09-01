@@ -23,7 +23,7 @@ namespace cfr {
 			NewPing *front_sonar;
 			NewPing *left_sonar;
 			NewPing *right_sonar;
-      SoftwareSerial *bluetooth;
+      
 
 			//Sonar pins
 			// TRIG, ECHO, MAX_DISTANCE
@@ -175,6 +175,7 @@ namespace cfr {
            * Optimum Setpoint value
            */
            static int set_point;
+           SoftwareSerial *bluetooth;
 	};
 }
 
