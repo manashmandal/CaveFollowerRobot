@@ -71,6 +71,12 @@ namespace cfr {
 			enum dir {Forward, Backward, Left, Right, Clockwise, AntiClockwise, BackwardLeft, BackwardRight, Nowhere};
 			dir Direction;
 
+
+      enum turn {TurnLeft, TurnRight, FollowCave};
+      turn Turn;
+
+      int checkTurn(void);
+
 				/*
 					DESCRIPTION:
 		============
@@ -110,6 +116,7 @@ namespace cfr {
 		*/
 
 		  void updateDistances(void);
+     void updateMedianDistances(void);
 
 		  /*
 
