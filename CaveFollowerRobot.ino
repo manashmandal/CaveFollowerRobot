@@ -40,5 +40,6 @@ void loop() {
    }
     //r.printViaBluetooth(200, 1500);
      // r.printDistances(200, 1500);
-    // r.followWall();
+    r.followWall();
+    delay(100);
 }

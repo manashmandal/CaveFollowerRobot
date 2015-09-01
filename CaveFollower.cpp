@@ -81,6 +81,8 @@ void cfr::Robot::initialize(void)
 	right_distance = 0;
   error = 0;
   previous_error = 0;
+  setKp(0);
+  setKd(0);
 }
 
 void cfr::Robot::run(uint left_speed, uint right_speed, Robot::dir left_dir, Robot::dir right_dir){
@@ -204,7 +206,7 @@ void cfr::Robot::followWall(void)
    * Debugging Purpose, uncomment if needed
    * 
    */
-  //bluetooth->println("Add value: " + String(add_value));
+  bluetooth->println("Add value: " + String(add_value));
   //Serial.println("Add value: " + String(add_value));
   
   if (add_value == 0.0) run(global_speed, global_speed, Forward, Forward);
