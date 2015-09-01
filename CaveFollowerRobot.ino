@@ -3,7 +3,7 @@
 #include "CaveFollower.h"
 
 #define MAX_DISTANCE 200
-#define FRONT_MAX_DISTANCE 300
+#define FRONT_MAX_DISTANCE 1000
 
 using namespace cfr;
 
@@ -27,6 +27,8 @@ void setup()
   r.setKp(7);
   r.setKd(1);
  // r.run(Robot::global_speed, 0, Robot::Forward, Robot::Forward);
+
+ 
 }
 
 void loop() {
@@ -40,11 +42,12 @@ void loop() {
 //   }
     //r.printViaBluetooth(200, 1500);
 //    r.printDistances(200, 1500);
-    r.followWall();
+    //r.followWall();
 //      r.bluetooth->println("Error: " + String(r.calculateError()));
       
 //    delay(1000);
-
+    r.bluetooth->println("Front Distance: " + String(r.frontMedianDistance()));
+    delay(100);
 //  r.frontMedianDistance();
 //  r.leftMedianDistance();
 //  r.rightMedianDistance();
