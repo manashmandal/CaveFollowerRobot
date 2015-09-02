@@ -2,9 +2,9 @@
 
 #include "CaveFollower.h"
 
-#define MAX_DISTANCE 200
-#define FRONT_MAX_DISTANCE 1000
-#define BACK_MAX_DISTANCE 1000
+#define MAX_DISTANCE 70
+#define FRONT_MAX_DISTANCE 15
+#define BACK_MAX_DISTANCE 30
 
 using namespace cfr;
 
@@ -27,9 +27,10 @@ void setup()
 {
   Serial.begin(9600);
   Serial.println("Begin!\n");
-  Robot::global_speed = 235;
+  Robot::global_speed = 245;
   r.setKp(3.5);
   r.setKd(.1);
+  r.ping_number = 2;
   //Optimum -> 150 speed, 3.5 kp and 0.1 kd
  // r.run(Robot::global_speed, 0, Robot::Forward, Robot::Forward);
 
@@ -53,6 +54,7 @@ void loop() {
 //    }
 
     r.followWall();
+//    r.printViaBluetooth();
 //    r.printDistances();
 //      r.bluetooth->println("Error: " + String(r.calculateError()));
       

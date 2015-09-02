@@ -189,6 +189,8 @@ namespace cfr {
            */
            static int set_point;
            SoftwareSerial *bluetooth;
+
+           int ping_number;
   };
 }
 
