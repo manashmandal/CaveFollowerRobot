@@ -260,7 +260,7 @@ void cfr::Robot::followWall(void)
   else if (add_value < 0.0) run(global_speed + add_value, global_speed, Forward, Forward);
   else if (add_value > 0.0) run(global_speed , global_speed - add_value, Forward, Forward);
 
-  } else run();
+  } 
   //while (frontMedianDistance() < 7) run(Nowhere);
 }
 
