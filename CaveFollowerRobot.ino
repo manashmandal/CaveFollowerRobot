@@ -27,7 +27,7 @@ void setup()
 {
   Serial.begin(9600);
   Serial.println("Begin!\n");
-  Robot::global_speed = 170;
+  Robot::global_speed = 200;
   r.setKp(3.5);
   r.setKd(.1);
   //Optimum -> 150 speed, 3.5 kp and 0.1 kd
