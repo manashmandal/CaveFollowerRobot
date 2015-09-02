@@ -68,12 +68,8 @@ void loop() {
 //    r.bluetooth->println(r.frontMedianDistance());
     
   if (r.calculateError() == -r.leftMedianDistance()){
-//    while (r.frontMedianDistance() >= 15) 
-//        {
-          r.run(Robot::global_speed - 50, Robot::global_speed - 50, Robot::Forward, Robot::Forward);    
-//        }
-
-         if (r.frontMedianDistance() < 15) {r.run(); r.bluetooth->println("Broken"); delay(100);}
+       r.run(Robot::global_speed - 50, Robot::global_speed - 50, Robot::Forward, Robot::Forward);    
+       if (r.frontMedianDistance() < 15) {r.run(); r.bluetooth->println("Broken"); delay(100);}
     }
   
   int turn_condition = r.checkTurn();
