@@ -79,7 +79,8 @@ cfr::Robot::Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sona
 
 void cfr::Robot::printViaBluetooth(byte short_delay, uint long_delay)
 {
-  updateDistances();
+//  updateDistances();
+  updateMedianDistances();
   bluetooth->println("******* DISTANCE BEGIN *********");
   bluetooth->println("Front distance: " + String(front_distance));
   delay(short_delay);
@@ -237,9 +238,9 @@ void cfr::Robot::printDistances(byte short_delay, uint long_delay)
 void cfr::Robot::followWall(void)
 {
 
-//  if (checkTurn() == Robot::FollowCave) bluetooth->println("Follow Cave");
-//  else if (checkTurn() == Robot::TurnRight) bluetooth->println("Turn Right");
-//  else if (checkTurn() == Robot::TurnLeft) bluetooth->println("Turn Left");
+  if (checkTurn() == Robot::FollowCave) bluetooth->println("Follow Cave");
+  else if (checkTurn() == Robot::TurnRight) bluetooth->println("Turn Right");
+  else if (checkTurn() == Robot::TurnLeft) bluetooth->println("Turn Left");
   
   previous_error = error;
   error = calculateError();
@@ -273,7 +274,7 @@ int cfr::Robot::calculateError(void)
 int cfr::Robot::checkTurn(void)
 {
   //bluetooth->println("Front Median Distance: " + String(frontMedianDistance()) + "\nLeft Median Distance: " + String(leftMedianDistance()) + "\nRight Median Distance: " + String(rightMedianDistance()));
-  if (frontMedianDistance() > 2 && frontMedianDistance() < 15){
+  if (frontMedianDistance() > 2 && frontMedianDistance() < 20){
     if (rightMedianDistance() == 0) return Robot::TurnRight;
     else if (leftMedianDistance() == 0) return Robot::TurnLeft;
   } else return Robot::FollowCave;

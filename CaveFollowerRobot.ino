@@ -3,7 +3,7 @@
 #include "CaveFollower.h"
 
 #define MAX_DISTANCE 70
-#define FRONT_MAX_DISTANCE 15
+#define FRONT_MAX_DISTANCE 30
 #define BACK_MAX_DISTANCE 30
 
 using namespace cfr;
@@ -53,7 +53,7 @@ void loop() {
 //      r.run(Robot::Nowhere);
 //    }
 
-    r.followWall();
+//    r.followWall();
 //    r.printViaBluetooth();
 //    r.printDistances();
 //      r.bluetooth->println("Error: " + String(r.calculateError()));
@@ -65,5 +65,34 @@ void loop() {
 //  r.leftMedianDistance();
 //  r.rightMedianDistance();
 //  delay(1000);
+//  int turn = r.checkTurn();
+//  if (turn == Robot::TurnRight) {
+//    turn = r.checkTurn();
+//    while (r.frontMedianDistance() != 0 && r.rightMedianDistance() != 0 && turn == Robot::TurnRight){
+//      turn = r.checkTurn();
+//      r.run(Robot::global_speed - 50,Robot::global_speed - 50,Robot::Clockwise); 
+//      delay(100);
+//      r.run();
+//    }
+//  } else r.run();
+
+  if (r.checkTurn() == Robot::TurnRight){
+    r.bluetooth->println("Turn Right");
+    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){ 
+      r.run(Robot::global_speed - 70, Robot::global_speed - 70, Robot::Clockwise);
+    }
+    r.run();
+    delay(250);
+  } 
+
+  else if (r.checkTurn() == Robot::TurnLeft){
+    r.bluetooth->println("Turn Left");
+    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){
+    r.run(Robot::global_speed - 70, Robot::global_speed - 70, Robot::AntiClockwise);
+    }
+    r.run();
+    delay(250);
+  }
+
 }
 
