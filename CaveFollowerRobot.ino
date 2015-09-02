@@ -3,7 +3,7 @@
 #include "CaveFollower.h"
 
 #define MAX_DISTANCE 29
-#define FRONT_MAX_DISTANCE 100
+#define FRONT_MAX_DISTANCE 40
 #define BACK_MAX_DISTANCE 30
 
 using namespace cfr;
@@ -68,18 +68,32 @@ void loop() {
 //    r.bluetooth->println(r.frontMedianDistance());
     
   if (r.calculateError() == -r.leftMedianDistance()){
-    while (r.frontMedianDistance() >= 15) 
-        {
+//    while (r.frontMedianDistance() >= 15) 
+//        {
           r.run(Robot::global_speed - 50, Robot::global_speed - 50, Robot::Forward, Robot::Forward);    
-        }
+//        }
 
-         if (r.frontMedianDistance() < 15) {r.run(); r.bluetooth->println("Broken");}
+         if (r.frontMedianDistance() < 15) {r.run(); r.bluetooth->println("Broken"); delay(100);}
     }
   
+  int turn_condition = r.checkTurn();
 
+  if (turn_condition == Robot::TurnRight){
+    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){ 
+      r.run(Robot::global_speed - 30, Robot::global_speed - 30, Robot::Clockwise);
+    }
+    r.run();
+    delay(250);
+
+    while (r.rightMedianDistance() <= 0) r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
     
 
-  else r.run();
+  }
+
+  turn_condition = r.checkTurn();
+
+  if (turn_condition == Robot::FollowCave) r.followWall();  
+
 
 //  else if (r.calculateError() ==
 
