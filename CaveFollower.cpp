@@ -1,6 +1,7 @@
 #include "CaveFollower.h"
 
 uint cfr::Robot::global_speed = 150;
+int cfr::Robot::global_right_speed = Robot::global_speed - 30;
 
 int cfr::Robot::set_point = 1;
 
@@ -241,8 +242,7 @@ void cfr::Robot::followWall(void)
 //  if (checkTurn() == Robot::FollowCave) bluetooth->println("Follow Cave");
 //  else if (checkTurn() == Robot::TurnRight) bluetooth->println("Turn Right");
 //  else if (checkTurn() == Robot::TurnLeft) bluetooth->println("Turn Left");
-
-  if (calculateError() != -leftMedianDistance() && calculateError() != rightMedianDistance()){ 
+ 
   
   previous_error = error;
   error = calculateError();
@@ -257,10 +257,10 @@ void cfr::Robot::followWall(void)
   //Serial.println("Add value: " + String(add_value));
   
   if (add_value == 0.0) run(global_speed, global_speed, Forward, Forward);
-  else if (add_value < 0.0) run(global_speed + add_value, global_speed, Forward, Forward);
-  else if (add_value > 0.0) run(global_speed , global_speed - add_value, Forward, Forward);
+  else if (add_value < 0.0) run(global_speed + add_value, global_right_speed, Forward, Forward);
+  else if (add_value > 0.0) run(global_speed , global_right_speed - add_value, Forward, Forward);
 
-  } 
+ 
   //while (frontMedianDistance() < 7) run(Nowhere);
 }
 
@@ -277,9 +277,9 @@ int cfr::Robot::calculateError(void)
 int cfr::Robot::checkTurn(void)
 {
   //bluetooth->println("Front Median Distance: " + String(frontMedianDistance()) + "\nLeft Median Distance: " + String(leftMedianDistance()) + "\nRight Median Distance: " + String(rightMedianDistance()));
-  if (frontMedianDistance() > 2 && frontMedianDistance() < 20){
-    if (rightMedianDistance() == 0) return Robot::TurnRight;
-    else if (leftMedianDistance() == 0) return Robot::TurnLeft;
+  if (frontMedianDistance() > 5 && frontMedianDistance() < 16){
+    if (rightMedianDistance() == 0 && leftMedianDistance() != 0) return Robot::TurnRight;
+    else if (leftMedianDistance() == 0 && rightMedianDistance() != 0) return Robot::TurnLeft;
   } else return Robot::FollowCave;
 }
 

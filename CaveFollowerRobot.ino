@@ -1,5 +1,3 @@
-//CaveFollowerRobot.ino
-
 #include "CaveFollower.h"
 
 #define MAX_DISTANCE 29
@@ -27,7 +25,8 @@ void setup()
 {
   Serial.begin(9600);
   Serial.println("Begin!\n");
-  Robot::global_speed = 245;
+  Robot::global_speed = 190;
+  Robot::global_right_speed = Robot::global_speed; //- 32;
   r.setKp(3.5);
   r.setKd(.1);
   r.ping_number = 2;
@@ -67,28 +66,28 @@ void loop() {
 //    r.bluetooth->print("Front Dist: ");
 //    r.bluetooth->println(r.frontMedianDistance());
     
-  if (r.calculateError() == -r.leftMedianDistance()){
-       r.run(Robot::global_speed - 50, Robot::global_speed - 50, Robot::Forward, Robot::Forward);    
-       if (r.frontMedianDistance() < 15) {r.run(); r.bluetooth->println("Broken"); delay(100);}
-    }
-  
-  int turn_condition = r.checkTurn();
-
-  if (turn_condition == Robot::TurnRight){
-    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){ 
-      r.run(Robot::global_speed - 30, Robot::global_speed - 30, Robot::Clockwise);
-    }
-    r.run();
-    delay(250);
-
-    while (r.rightMedianDistance() <= 0) r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
-    
-
-  }
-
-  turn_condition = r.checkTurn();
-
-  if (turn_condition == Robot::FollowCave) r.followWall();  
+//  if (r.calculateError() == -r.leftMedianDistance()){
+//       r.run(Robot::global_speed - 50, Robot::global_right_speed - 50, Robot::Forward, Robot::Forward);    
+//       if (r.frontMedianDistance() < 15) {r.run(); r.bluetooth->println("Broken"); delay(100);}
+//    }
+//  
+//  int turn_condition = r.checkTurn();
+//
+//  if (turn_condition == Robot::TurnRight){
+//    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){ 
+//      r.run(Robot::global_speed - 30, Robot::global_right_speed - 30, Robot::Clockwise);
+//    }
+//    r.run();
+//    delay(250);
+//
+//    while (r.rightMedianDistance() <= 0) r.run(Robot::global_speed, Robot::global_right_speed, Robot::Forward, Robot::Forward);
+//    
+//
+//  }
+//
+//  turn_condition = r.checkTurn();
+//
+//  if (turn_condition == Robot::FollowCave) r.followWall();  
 
 
 //  else if (r.calculateError() ==
@@ -97,6 +96,47 @@ void loop() {
 //  r.followWall();
 //  r.printViaBluetooth();
 //  r.bluetooth->println(r.calculateError());
+  bool left_rotation_done = false;
+  bool right_rotation_done = false;
+
+  while (r.leftMedianDistance() > 3 && r.rightMedianDistance() > 3) r.followWall();
+
+  while (r.frontMedianDistance() > 20 && r.leftMedianDistance() > 3 && r.rightMedianDistance() == 0){
+    r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
+  }
+  
+  r.run();
+
+  
+  while (r.frontMedianDistance() > 20 && r.rightMedianDistance() > 3 && r.leftMedianDistance() == 0){
+    r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
+  }
+
+  r.run();
+
+  while (r.frontMedianDistance() != 0 && r.leftMedianDistance() > 4){
+    r.run(Robot::global_speed + 50, Robot::global_speed + 50, Robot::Clockwise);
+    delay(2);
+    left_rotation_done = true;
+  }
+
+  while (r.frontMedianDistance() != 0 && r.rightMedianDistance() > 3){
+    r.run(Robot::global_speed + 50, Robot::global_speed + 50, Robot::AntiClockwise);
+    delay(2);
+    right_rotation_done = true;
+  }
+
+  if (left_rotation_done || right_rotation_done){
+  
+  r.run();
+  delay(100);
+  r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
+  delay(200);
+
+  
+  }
+  
+  //r.followWall();
  
 }
 

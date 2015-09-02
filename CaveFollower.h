@@ -161,6 +161,8 @@ namespace cfr {
         void printDistances(byte short_delay = 100, uint long_delay = 1000);
         void printViaBluetooth(byte short_delay = 100, uint long_delay = 1500);
 
+        static int global_right_speed;
+
 
         /*
          * 
