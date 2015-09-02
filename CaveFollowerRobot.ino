@@ -3,7 +3,7 @@
 #include "CaveFollower.h"
 
 #define MAX_DISTANCE 29
-#define FRONT_MAX_DISTANCE 30
+#define FRONT_MAX_DISTANCE 100
 #define BACK_MAX_DISTANCE 30
 
 using namespace cfr;
@@ -38,32 +38,55 @@ void setup()
 }
 
 void loop() {
+//
+//  if (r.checkTurn() == Robot::TurnRight){
+//    r.bluetooth->println("Turn Right");
+//    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){ 
+//      r.run(Robot::global_speed - 70, Robot::global_speed - 70, Robot::Clockwise);
+//    }
+//    r.run();
+//    delay(250);
+//  } 
+//
+//  else if (r.checkTurn() == Robot::TurnLeft){
+//    r.bluetooth->println("Turn Left");
+//    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){
+//    r.run(Robot::global_speed - 70, Robot::global_speed - 70, Robot::AntiClockwise);
+//    }
+//    r.run();
+//    delay(250);
+//  }
+//
+//  else if (r.calculateError() == -r.leftMedianDistance()){
+//    while (!(r.frontMedianDistance() > 2 && r.frontMedianDistance() < 12)) r.run(Robot::global_speed - 50, Robot::global_speed - 50, Robot::Forward, Robot::Forward);
+//  }
+//     r.bluetooth->print("Error: ");
+//    r.bluetooth->println(r.calculateError());
+//    r.bluetooth->print("Dist: ");
+//    r.bluetooth->println(r.leftMedianDistance());
+//    r.bluetooth->print("Front Dist: ");
+//    r.bluetooth->println(r.frontMedianDistance());
+    
+  if (r.calculateError() == -r.leftMedianDistance()){
+    while (r.frontMedianDistance() >= 15) 
+        {
+          r.run(Robot::global_speed - 50, Robot::global_speed - 50, Robot::Forward, Robot::Forward);    
+        }
 
-  if (r.checkTurn() == Robot::TurnRight){
-    r.bluetooth->println("Turn Right");
-    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){ 
-      r.run(Robot::global_speed - 70, Robot::global_speed - 70, Robot::Clockwise);
+         if (r.frontMedianDistance() < 15) {r.run(); r.bluetooth->println("Broken");}
     }
-    r.run();
-    delay(250);
-  } 
+  
 
-  else if (r.checkTurn() == Robot::TurnLeft){
-    r.bluetooth->println("Turn Left");
-    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){
-    r.run(Robot::global_speed - 70, Robot::global_speed - 70, Robot::AntiClockwise);
-    }
-    r.run();
-    delay(250);
-  }
+    
 
-  else if (r.calculateError() == -r.leftMedianDistance()){
-    while (!(r.frontMedianDistance() > 2 && r.frontMedianDistance() < 12)) r.run(Robot::global_speed - 50, Robot::global_speed - 50, Robot::Forward, Robot::Forward);
-  }
+  else r.run();
 
-  else r.followWall();
+//  else if (r.calculateError() ==
+
+//  else r.followWall();
 //  r.followWall();
 //  r.printViaBluetooth();
 //  r.bluetooth->println(r.calculateError());
+ 
 }
 
