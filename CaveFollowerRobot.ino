@@ -11,6 +11,19 @@ using namespace cfr;
 byte rm[2] = {3, 4};
 byte lm[2] = {5, 6};
 
+int p;
+int i = 0;
+int pid;
+
+int initial_side_sensor = r.leftMedianDistance();
+int previous_side_sensor = 0;
+
+float KP = 0.7;
+float KD = 0.8;
+float KI = 0;
+
+
+
 byte tx_rx[2] = {51, 50};
 
 //TRIG > ECHO > MAX_DISTANCE
@@ -19,15 +32,17 @@ byte l_sonar[3] = {9, 8, MAX_DISTANCE};
 byte r_sonar[3] = {13, 12, MAX_DISTANCE};
 byte b_sonar[3] = {31, 30, BACK_MAX_DISTANCE};
 
-Robot r(lm, rm, l_sonar , f_sonar, r_sonar, tx_rx);
+Robot r(lm, rm, l_sonar , f_sonar, r_sonar, b_sonar,tx_rx);
+
+
 
 void setup()
 {
-	Serial.begin(9600);
-	Serial.println("Begin!\n");
-  Robot::global_speed = 150;
-  r.setKp(7);
-  r.setKd(1);
+  Serial.begin(9600);
+  Serial.println("Begin!\n");
+  Robot::global_speed = 255;
+  r.setKp(2);
+  r.setKd(0.7);
  // r.run(Robot::global_speed, 0, Robot::Forward, Robot::Forward);
 
  
@@ -55,3 +70,4 @@ void loop() {
 //  r.rightMedianDistance();
 //  delay(1000);
 }
+
