@@ -280,18 +280,18 @@ int cfr::Robot::checkTurn(void)
 }
 
 
-int cfr::Robot::frontMedianDistance(void)
+int cfr::Robot::frontReading(void)
 {
-  int uS = front_sonar->ping_median(3);
+  int uS = front_sonar->ping_median(10);
 //  Serial.println("Front Distance: " + String(uS / US_ROUNDTRIP_CM));
 //  bluetooth->println("Front Distance: " + String(uS / US_ROUNDTRIP_CM));
   return uS / US_ROUNDTRIP_CM;
 }
 
 
-int cfr::Robot::leftMedianDistance(void)
+int cfr::Robot::leftReading(void)
 {
-  int uS = left_sonar->ping_median(3);
+  int uS = left_sonar->ping_median(10);
   //Serial.println("Left Distance: " + String(uS / US_ROUNDTRIP_CM));
 //  bluetooth->println("Left Distance: " + String(uS / US_ROUNDTRIP_CM));
   return uS / US_ROUNDTRIP_CM;
@@ -299,9 +299,9 @@ int cfr::Robot::leftMedianDistance(void)
 
 
 
-int cfr::Robot::rightMedianDistance(void)
+int cfr::Robot::rightReading(void)
 {
-  int uS = right_sonar->ping_median(3);
+  int uS = right_sonar->ping_median(10);
 //  Serial.println("Right Distance: " + String(uS / US_ROUNDTRIP_CM));
 //  bluetooth->println("Right Distance: " + String(uS / US_ROUNDTRIP_CM));
   return uS / US_ROUNDTRIP_CM;
