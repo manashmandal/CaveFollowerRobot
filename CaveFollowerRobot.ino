@@ -11,19 +11,6 @@ using namespace cfr;
 byte rm[2] = {3, 4};
 byte lm[2] = {5, 6};
 
-int p;
-int i = 0;
-int pid;
-
-int initial_side_sensor = r.leftMedianDistance();
-int previous_side_sensor = 0;
-
-float KP = 0.7;
-float KD = 0.8;
-float KI = 0;
-
-
-
 byte tx_rx[2] = {51, 50};
 
 //TRIG > ECHO > MAX_DISTANCE
@@ -60,6 +47,7 @@ void loop() {
     //r.printViaBluetooth(200, 1500);
 //    r.printDistances(200, 1500);
     r.followWall();
+    r.printDistances();
 //      r.bluetooth->println("Error: " + String(r.calculateError()));
       
 //    delay(1000);
