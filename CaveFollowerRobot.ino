@@ -27,7 +27,7 @@ void setup()
 {
   Serial.begin(9600);
   Serial.println("Begin!\n");
-  Robot::global_speed = 150;
+  Robot::global_speed = 170;
   r.setKp(3.5);
   r.setKd(.1);
   //Optimum -> 150 speed, 3.5 kp and 0.1 kd
@@ -47,6 +47,11 @@ void loop() {
 //   }
     //r.printViaBluetooth(200, 1500);
 //    r.printDistances(200, 1500);
+
+//    while (r.frontMedianDistance() < 10 && r.frontMedianDistance() > 5){
+//      r.run(Robot::Nowhere);
+//    }
+
     r.followWall();
 //    r.printDistances();
 //      r.bluetooth->println("Error: " + String(r.calculateError()));
