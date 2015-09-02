@@ -25,7 +25,7 @@ void setup()
 {
   Serial.begin(9600);
   Serial.println("Begin!\n");
-  Robot::global_speed = 190;
+  Robot::global_speed = 150;
   Robot::global_right_speed = Robot::global_speed; //- 32;
   r.setKp(3.5);
   r.setKd(.1);
@@ -37,106 +37,23 @@ void setup()
 }
 
 void loop() {
-//
-//  if (r.checkTurn() == Robot::TurnRight){
-//    r.bluetooth->println("Turn Right");
-//    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){ 
-//      r.run(Robot::global_speed - 70, Robot::global_speed - 70, Robot::Clockwise);
-//    }
-//    r.run();
-//    delay(250);
-//  } 
-//
-//  else if (r.checkTurn() == Robot::TurnLeft){
-//    r.bluetooth->println("Turn Left");
-//    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){
-//    r.run(Robot::global_speed - 70, Robot::global_speed - 70, Robot::AntiClockwise);
-//    }
-//    r.run();
-//    delay(250);
-//  }
-//
-//  else if (r.calculateError() == -r.leftMedianDistance()){
-//    while (!(r.frontMedianDistance() > 2 && r.frontMedianDistance() < 12)) r.run(Robot::global_speed - 50, Robot::global_speed - 50, Robot::Forward, Robot::Forward);
-//  }
-//     r.bluetooth->print("Error: ");
-//    r.bluetooth->println(r.calculateError());
-//    r.bluetooth->print("Dist: ");
-//    r.bluetooth->println(r.leftMedianDistance());
-//    r.bluetooth->print("Front Dist: ");
-//    r.bluetooth->println(r.frontMedianDistance());
-    
-//  if (r.calculateError() == -r.leftMedianDistance()){
-//       r.run(Robot::global_speed - 50, Robot::global_right_speed - 50, Robot::Forward, Robot::Forward);    
-//       if (r.frontMedianDistance() < 15) {r.run(); r.bluetooth->println("Broken"); delay(100);}
-//    }
-//  
-//  int turn_condition = r.checkTurn();
-//
-//  if (turn_condition == Robot::TurnRight){
-//    while (r.frontMedianDistance() != 0 && !(r.backMedianDistance() > 3 && r.backMedianDistance() < 12)){ 
-//      r.run(Robot::global_speed - 30, Robot::global_right_speed - 30, Robot::Clockwise);
-//    }
-//    r.run();
-//    delay(250);
-//
-//    while (r.rightMedianDistance() <= 0) r.run(Robot::global_speed, Robot::global_right_speed, Robot::Forward, Robot::Forward);
-//    
-//
-//  }
-//
-//  turn_condition = r.checkTurn();
-//
-//  if (turn_condition == Robot::FollowCave) r.followWall();  
+  bool left_rotation = false;
+  bool right_rotation = false;
 
-
-//  else if (r.calculateError() ==
-
-//  else r.followWall();
-//  r.followWall();
-//  r.printViaBluetooth();
-//  r.bluetooth->println(r.calculateError());
-  bool left_rotation_done = false;
-  bool right_rotation_done = false;
-
-  while (r.leftMedianDistance() > 3 && r.rightMedianDistance() > 3) r.followWall();
-
-  while (r.frontMedianDistance() > 20 && r.leftMedianDistance() > 3 && r.rightMedianDistance() == 0){
-    r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
-  }
-  
-  r.run();
-
-  
-  while (r.frontMedianDistance() > 20 && r.rightMedianDistance() > 3 && r.leftMedianDistance() == 0){
-    r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
-  }
-
-  r.run();
+  while(r.leftMedianDistance() > 3 && r.rightMedianDistance() > 3) r.followWall();
 
   while (r.frontMedianDistance() != 0 && r.leftMedianDistance() > 4){
-    r.run(Robot::global_speed + 50, Robot::global_speed + 50, Robot::Clockwise);
+    r.run(Robot::global_speed , Robot::global_speed , Robot::Clockwise);
     delay(2);
-    left_rotation_done = true;
+    right_rotation = true;
   }
 
-  while (r.frontMedianDistance() != 0 && r.rightMedianDistance() > 3){
-    r.run(Robot::global_speed + 50, Robot::global_speed + 50, Robot::AntiClockwise);
-    delay(2);
-    right_rotation_done = true;
+  if (right_rotation){
+    r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
+    delay(250);
   }
-
-  if (left_rotation_done || right_rotation_done){
   
   r.run();
-  delay(100);
-  r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
-  delay(200);
-
-  
-  }
-  
-  //r.followWall();
  
 }
 
