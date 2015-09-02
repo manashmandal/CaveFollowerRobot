@@ -238,9 +238,11 @@ void cfr::Robot::printDistances(byte short_delay, uint long_delay)
 void cfr::Robot::followWall(void)
 {
 
-  if (checkTurn() == Robot::FollowCave) bluetooth->println("Follow Cave");
-  else if (checkTurn() == Robot::TurnRight) bluetooth->println("Turn Right");
-  else if (checkTurn() == Robot::TurnLeft) bluetooth->println("Turn Left");
+//  if (checkTurn() == Robot::FollowCave) bluetooth->println("Follow Cave");
+//  else if (checkTurn() == Robot::TurnRight) bluetooth->println("Turn Right");
+//  else if (checkTurn() == Robot::TurnLeft) bluetooth->println("Turn Left");
+
+  if (calculateError() != -leftMedianDistance() && calculateError() != rightMedianDistance()){ 
   
   previous_error = error;
   error = calculateError();
@@ -258,6 +260,7 @@ void cfr::Robot::followWall(void)
   else if (add_value < 0.0) run(global_speed + add_value, global_speed, Forward, Forward);
   else if (add_value > 0.0) run(global_speed , global_speed - add_value, Forward, Forward);
 
+  } else run();
   //while (frontMedianDistance() < 7) run(Nowhere);
 }
 
