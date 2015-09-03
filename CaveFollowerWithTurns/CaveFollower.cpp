@@ -1,6 +1,7 @@
 #include "CaveFollower.h"
 
 uint cfr::Robot::global_speed = 150;
+int cfr::Robot::global_right_speed = Robot::global_speed - 30;
 
 int cfr::Robot::set_point = 1;
 
@@ -44,7 +45,7 @@ cfr::Robot::Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sona
   bluetooth = new SoftwareSerial(rxTx[0], rxTx[1]);
   bluetooth->begin(9600);
   bluetooth->println("*****Initialized Bluetooth******");
-  
+  ping_number = 3;
   initialize();
 }
 
@@ -79,7 +80,8 @@ cfr::Robot::Robot(byte *lm, byte *rm, byte *l_sonar, byte *f_sonar, byte *r_sona
 
 void cfr::Robot::printViaBluetooth(byte short_delay, uint long_delay)
 {
-  updateDistances();
+//  updateDistances();
+  updateMedianDistances();
   bluetooth->println("******* DISTANCE BEGIN *********");
   bluetooth->println("Front distance: " + String(front_distance));
   delay(short_delay);
@@ -240,6 +242,7 @@ void cfr::Robot::followWall(void)
 //  if (checkTurn() == Robot::FollowCave) bluetooth->println("Follow Cave");
 //  else if (checkTurn() == Robot::TurnRight) bluetooth->println("Turn Right");
 //  else if (checkTurn() == Robot::TurnLeft) bluetooth->println("Turn Left");
+ 
   
   previous_error = error;
   error = calculateError();
@@ -254,9 +257,10 @@ void cfr::Robot::followWall(void)
   //Serial.println("Add value: " + String(add_value));
   
   if (add_value == 0.0) run(global_speed, global_speed, Forward, Forward);
-  else if (add_value < 0.0) run(global_speed + add_value, global_speed, Forward, Forward);
-  else if (add_value > 0.0) run(global_speed , global_speed - add_value, Forward, Forward);
+  else if (add_value < 0.0) run(global_speed + add_value, global_right_speed, Forward, Forward);
+  else if (add_value > 0.0) run(global_speed , global_right_speed - add_value, Forward, Forward);
 
+ 
   //while (frontMedianDistance() < 7) run(Nowhere);
 }
 
@@ -273,25 +277,46 @@ int cfr::Robot::calculateError(void)
 int cfr::Robot::checkTurn(void)
 {
   //bluetooth->println("Front Median Distance: " + String(frontMedianDistance()) + "\nLeft Median Distance: " + String(leftMedianDistance()) + "\nRight Median Distance: " + String(rightMedianDistance()));
-  if (frontMedianDistance() >= 3 && frontMedianDistance() <= 9) {
-    if (leftMedianDistance() >= 3 && leftMedianDistance() <= 12) return Robot::TurnRight;
-    else if (rightMedianDistance() >= 3 && rightMedianDistance() <= 12) return Robot::TurnLeft; 
+  if (frontMedianDistance() > 5 && frontMedianDistance() < 16){
+    if (rightMedianDistance() == 0 && leftMedianDistance() != 0) return Robot::TurnRight;
+    else if (leftMedianDistance() == 0 && rightMedianDistance() != 0) return Robot::TurnLeft;
   } else return Robot::FollowCave;
 }
 
-
-int cfr::Robot::frontReading(void)
+void cfr::Robot::leftPD(void)
 {
-  int uS = front_sonar->ping_median(10);
+  previous_error = error;
+  error = calculateError();
+
+  double add_value = (kp + 7) * error + (kd + 5) * (previous_error - error);
+
+  /*
+   * Debugging Purpose, uncomment if needed
+   * 
+   */
+  //bluetooth->println("Add value: " + String(add_value));
+  //Serial.println("Add value: " + String(add_value));
+
+  run(global_speed + add_value, global_speed, Forward, Forward);
+  
+//  if (add_value == 0.0) run(global_speed, global_speed, Forward, Forward);
+//  else if (add_value < 0.0) run(global_speed + add_value, global_right_speed, Forward, Forward);
+//  else if (add_value > 0.0) run(global_speed , global_right_speed - add_value, Forward, Forward);
+}
+
+
+int cfr::Robot::frontMedianDistance(void)
+{
+  int uS = front_sonar->ping_median(ping_number);
 //  Serial.println("Front Distance: " + String(uS / US_ROUNDTRIP_CM));
 //  bluetooth->println("Front Distance: " + String(uS / US_ROUNDTRIP_CM));
   return uS / US_ROUNDTRIP_CM;
 }
 
 
-int cfr::Robot::leftReading(void)
+int cfr::Robot::leftMedianDistance(void)
 {
-  int uS = left_sonar->ping_median(10);
+  int uS = left_sonar->ping_median(ping_number);
   //Serial.println("Left Distance: " + String(uS / US_ROUNDTRIP_CM));
 //  bluetooth->println("Left Distance: " + String(uS / US_ROUNDTRIP_CM));
   return uS / US_ROUNDTRIP_CM;
@@ -299,9 +324,9 @@ int cfr::Robot::leftReading(void)
 
 
 
-int cfr::Robot::rightReading(void)
+int cfr::Robot::rightMedianDistance(void)
 {
-  int uS = right_sonar->ping_median(10);
+  int uS = right_sonar->ping_median(ping_number);
 //  Serial.println("Right Distance: " + String(uS / US_ROUNDTRIP_CM));
 //  bluetooth->println("Right Distance: " + String(uS / US_ROUNDTRIP_CM));
   return uS / US_ROUNDTRIP_CM;
@@ -309,7 +334,7 @@ int cfr::Robot::rightReading(void)
 
 int cfr::Robot::backMedianDistance(void)
 {
-  int uS = back_sonar->ping_median();
+  int uS = back_sonar->ping_median(ping_number);
 //  Serial.println("Back Distance: " + String(uS / US_ROUNDTRIP_CM));
 //  bluetooth->println("Back Distance: " + String(uS / US_ROUNDTRIP_CM));
   return uS / US_ROUNDTRIP_CM;

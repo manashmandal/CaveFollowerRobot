@@ -1,6 +1,6 @@
 
-#ifndef CAVEROBOT_H_
-#define CAVEROBOT_H_
+#ifndef CAVEFOLLOWER_H_
+#define CAVEFOLLOWER_H_
 #include <Arduino.h>
 #include <math.h>
 #include "NewPing.h"
@@ -33,10 +33,10 @@ namespace cfr {
       byte bs[3];
       
       //Unsigned distance variables
-      int front_distance;
-      int right_distance;
-      int left_distance;
-      int back_distance;
+      uint front_distance;
+      uint right_distance;
+      uint left_distance;
+      uint back_distance;
 
       //Kp and Kd constant
       double kp, kd;
@@ -134,10 +134,10 @@ namespace cfr {
       uint leftDistance(void);
       uint rightDistance(void);
 
-      int frontReading(void);
-      int leftReading(void);
-      int rightReading(void);
-      int backReading(void);
+      int frontMedianDistance(void);
+      int leftMedianDistance(void);
+      int rightMedianDistance(void);
+      int backMedianDistance(void);
       /*
       DESCRIPTION:
       ============
@@ -160,6 +160,8 @@ namespace cfr {
 
         void printDistances(byte short_delay = 100, uint long_delay = 1000);
         void printViaBluetooth(byte short_delay = 100, uint long_delay = 1500);
+
+        static int global_right_speed;
 
 
         /*
@@ -189,6 +191,10 @@ namespace cfr {
            */
            static int set_point;
            SoftwareSerial *bluetooth;
+
+           int ping_number;
+
+           void leftPD(void);
   };
 }
 
