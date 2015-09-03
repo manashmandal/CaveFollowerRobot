@@ -27,10 +27,11 @@ void setup()
   Serial.println("Begin!\n");
   Robot::global_speed = 150;
   Robot::global_right_speed = Robot::global_speed; //- 32;
-  r.setKp(3.5);
-  r.setKd(.1);
+  r.setKp(3.6);
+  r.setKd(.15);
   r.ping_number = 2;
   //Optimum -> 150 speed, 3.5 kp and 0.1 kd
+  //ping number = 2
  // r.run(Robot::global_speed, 0, Robot::Forward, Robot::Forward);
 
  
@@ -43,17 +44,17 @@ void loop() {
   while(r.leftMedianDistance() > 3 && r.rightMedianDistance() > 3) r.followWall();
 
   //Halts if front obstacle is detected and no wall on the right side
-  while(r.frontMedianDistance() > 20 && r.rightMedianDistance() <= 0 && r.leftMedianDistance() > 3) r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
+  while(r.frontMedianDistance() > 30 && r.rightMedianDistance() <= 0 && r.leftMedianDistance() > 3) r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
 
   //Halts if front obstacle is detected and no wall on the left side
-  while(r.frontMedianDistance() > 20 && r.rightMedianDistance() > 3 && r.leftMedianDistance() <= 0) r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
+  while(r.frontMedianDistance() > 30 && r.rightMedianDistance() > 3 && r.leftMedianDistance() <= 0) r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
   
   r.run();
   delay(1);
 
 
   //Rotates clockwise if desired direction is right
-  while (r.frontMedianDistance() != 0 && r.leftMedianDistance() > 4){
+  while (r.frontMedianDistance() != 0 && r.leftMedianDistance() > 3){
     r.run(Robot::global_speed, Robot::global_speed, Robot::Clockwise);
 //    r.run(255, Robot::global_speed, Robot::Right);
     //delay(2);
@@ -61,7 +62,7 @@ void loop() {
   }
 
   //Rotates anticlockwise if desired direction is left
-   while (r.frontMedianDistance() != 0 && r.rightMedianDistance() > 4){
+   while (r.frontMedianDistance() != 0 && r.rightMedianDistance() > 3){
     r.run(Robot::global_speed, Robot::global_speed, Robot::AntiClockwise);
 //    r.run(255, Robot::global_speed, Robot::Right);
     //delay(2);
@@ -70,11 +71,11 @@ void loop() {
 
 
   //Goes forward if right side is open
-  while(r.rightMedianDistance() == 0 && r.leftMedianDistance() > 10) {r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);}
+  while(r.rightMedianDistance() == 0 && r.leftMedianDistance() > 5) {r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);}
 
   //Goes forward if left side is open
 
-  while(r.leftMedianDistance() == 0 && r.rightMedianDistance() > 10) {r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);}
+  while(r.leftMedianDistance() == 0 && r.rightMedianDistance() > 5) {r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);}
 
   if (r.bluetooth->read() == 'a') r.printViaBluetooth();
 
