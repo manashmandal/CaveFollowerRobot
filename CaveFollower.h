@@ -193,6 +193,8 @@ namespace cfr {
            SoftwareSerial *bluetooth;
 
            int ping_number;
+
+           void leftPD(void);
   };
 }
 

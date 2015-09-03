@@ -283,6 +283,27 @@ int cfr::Robot::checkTurn(void)
   } else return Robot::FollowCave;
 }
 
+void cfr::Robot::leftPD(void)
+{
+  previous_error = error;
+  error = calculateError();
+
+  double add_value = (kp + 7) * error + (kd + 5) * (previous_error - error);
+
+  /*
+   * Debugging Purpose, uncomment if needed
+   * 
+   */
+  //bluetooth->println("Add value: " + String(add_value));
+  //Serial.println("Add value: " + String(add_value));
+
+  run(global_speed + add_value, global_speed, Forward, Forward);
+  
+//  if (add_value == 0.0) run(global_speed, global_speed, Forward, Forward);
+//  else if (add_value < 0.0) run(global_speed + add_value, global_right_speed, Forward, Forward);
+//  else if (add_value > 0.0) run(global_speed , global_right_speed - add_value, Forward, Forward);
+}
+
 
 int cfr::Robot::frontMedianDistance(void)
 {

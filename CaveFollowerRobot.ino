@@ -1,6 +1,6 @@
 #include "CaveFollower.h"
 
-#define MAX_DISTANCE 29
+#define MAX_DISTANCE 40
 #define FRONT_MAX_DISTANCE 40
 #define BACK_MAX_DISTANCE 30
 
@@ -38,21 +38,29 @@ void setup()
 
 void loop() {
   bool left_rotation = false;
-  bool right_rotation = false;
+
 
   while(r.leftMedianDistance() > 3 && r.rightMedianDistance() > 3) r.followWall();
 
+  while(r.frontMedianDistance() > 20 && r.rightMedianDistance() <= 0 && r.leftMedianDistance() > 3) r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
+
+  r.run();
+  delay(1);
+
+ 
   while (r.frontMedianDistance() != 0 && r.leftMedianDistance() > 4){
-    r.run(Robot::global_speed , Robot::global_speed , Robot::Clockwise);
-    delay(2);
-    right_rotation = true;
+    r.run(Robot::global_speed, Robot::global_speed, Robot::Clockwise);
+//    r.run(255, Robot::global_speed, Robot::Right);
+    //delay(2);
+
   }
 
-  if (right_rotation){
-    r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);
-    delay(250);
-  }
   
+  while(r.rightMedianDistance() == 0 && r.leftMedianDistance() > 10) {r.run(Robot::global_speed, Robot::global_speed, Robot::Forward, Robot::Forward);}
+  
+
+  if (r.bluetooth->read() == 'a') r.printViaBluetooth();
+
   r.run();
  
 }
