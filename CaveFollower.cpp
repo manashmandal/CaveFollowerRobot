@@ -322,8 +322,6 @@ int cfr::Robot::leftMedianDistance(void)
   return uS / US_ROUNDTRIP_CM;
 }
 
-
-
 int cfr::Robot::rightMedianDistance(void)
 {
   int uS = right_sonar->ping_median(ping_number);
@@ -339,5 +337,3 @@ int cfr::Robot::backMedianDistance(void)
 //  bluetooth->println("Back Distance: " + String(uS / US_ROUNDTRIP_CM));
   return uS / US_ROUNDTRIP_CM;
 }
-
-
